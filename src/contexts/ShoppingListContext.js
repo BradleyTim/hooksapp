@@ -1,26 +1,13 @@
-import React, { useState, createContext } from "react";
-import uuid from "uuid";
+import React, { useReducer, createContext } from "react";
+import shoppingReducer from "../reducers/ShoppingReducer";
 
 export const ShoppingListContext = createContext();
 
 const ShoppingListContextProvider = props => {
-  const [shopping, setShopping] = useState([
-    { name: "bread", id: 1 },
-    { name: "milk", id: 2 }
-  ]);
-
-  const addShopping = name => {
-    setShopping([{ name, id: uuid.v1() }, ...shopping]);
-  };
-
-  const removeShopping = id => {
-    setShopping(shopping.filter(item => item.id !== id));
-  };
+  const [shopping, dispatch] = useReducer(shoppingReducer, []);
 
   return (
-    <ShoppingListContext.Provider
-      value={{ shopping, addShopping, removeShopping }}
-    >
+    <ShoppingListContext.Provider value={{ shopping, dispatch }}>
       {props.children}
     </ShoppingListContext.Provider>
   );
